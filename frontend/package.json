@@ -1,11 +1,11 @@
 {
-  "name": "react-seed",
+  "name": "rose-rocket-challenge-frontend",
   "version": "1.0.0",
   "description": "react + flow + redux + antd",
   "main": "./src/index.jsx",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sylhero/react-seed"
+    "url": "https://github.com/deventio7/rose-rocket-challenge/frontend"
   },
   "keywords": [
     "reactjs",
@@ -14,9 +14,9 @@
     "redux",
     "antd"
   ],
-  "author": "Yulong Song",
+  "author": "Alex Lee",
   "license": "ISC",
-  "homepage": "https://github.com/sylhero/react-seed/README.md",
+  "homepage": "https://github.com/deventio7/rose-rocket-challenge/frontend/README.md",
   "jest-junit": {
     "output": "./coverage/junit/results.xml"
   },
