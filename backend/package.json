@@ -1,0 +1,21 @@
+{
+  "name": "rose-rocket-challenge-backend",
+  "version": "1.0.0",
+  "description": "backend for rose rocket technical challenge",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deventio7/rose-rocket-challenge/backend"
+  },
+  "author": "Alex Lee",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "fs-extra": "^7.0.1",
+    "loglevel": "^1.6.1"
+  }
+}
