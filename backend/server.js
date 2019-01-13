@@ -14,17 +14,17 @@ let init = async () => {
         stops: undefined
     };
 
-    let promises = Object.keys(state).map((ele) => fs.readFile(`initial_data/${ele}.json`, 'utf8'));
+    let promises = Object.keys(state).map((key) => {
+        return fs.readFile(`initial_data/${key}.json`, 'utf8').then((contents) => {
+            state[key] = JSON.parse(contents);
+        });
+    });
     let allRead = await Promise.all(promises);
 
-    Object.keys(state).forEach((keyString, ind) => {
-        state[keyString] = JSON.parse(allRead[ind]);
-    });
-
-    for (simpleRequest in state) {
+    for (let simpleRequest in state) {
         app.get(`/${simpleRequest}`, (req, res) => {
             log.info(`GET /${simpleRequest} success`);
-            res.json(state[simpleRequest]);
+            res.status(200).json(state[simpleRequest]);
         });
     }
 
