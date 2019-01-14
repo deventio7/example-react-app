@@ -1,14 +1,19 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { Layout } from 'antd';
 import Routes from './Routes';
+import Header from './Header';
+
+import LayoutCss from './Layout.scss';
 
 const App = () => {
     return (
         <BrowserRouter>
             <React.StrictMode>
-                <div>
+                <Layout className={LayoutCss.layout}>
+                    <Header />
                     {Routes}
-                </div>
+                </Layout>
             </React.StrictMode>
         </BrowserRouter>);
 };
