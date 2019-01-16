@@ -42,7 +42,7 @@ rules.push({
         loader: 'sass-resources-loader',
         options: {
             // Provide path to the file with resources
-            resources: './src/partials/_constant.scss'
+            resources: './src/partials/_base.scss'
        }
     }]
 });

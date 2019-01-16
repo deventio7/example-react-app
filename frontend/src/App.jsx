@@ -1,21 +1,22 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, withRouter } from 'react-router-dom';
 import { Layout } from 'antd';
 import Routes from './Routes';
-import Header from './Header';
-
-import LayoutCss from './Layout.scss';
+import NavHeader from './NavHeader';
 
 const App = () => {
+    const RoutedNavHeader = withRouter(NavHeader);
     return (
-        <BrowserRouter>
-            <React.StrictMode>
-                <Layout className={LayoutCss.layout}>
-                    <Header />
-                    {Routes}
-                </Layout>
-            </React.StrictMode>
-        </BrowserRouter>);
+        <div>
+            <BrowserRouter>
+                <div>
+                    <Layout>
+                        <RoutedNavHeader />
+                        <Routes />
+                    </Layout>
+                </div>
+            </BrowserRouter>
+        </div>);
 };
 
 export default App;

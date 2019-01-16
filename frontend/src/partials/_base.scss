@@ -1,0 +1,21 @@
+@import "_constant.scss";
+
+:global {
+
+    body {
+        background-color: $sky-blue;
+    }
+
+    div {
+        height: auto;
+    }
+
+    .ant-layout {
+        margin: 0 10% 0 10%;
+        width: 80%;
+    }
+
+    .ant-menu .ant-menu-item .anticon {
+        margin: 0;
+    }
+}
