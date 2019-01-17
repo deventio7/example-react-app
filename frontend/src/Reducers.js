@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import TestMeReducers from './TestMe/Reducers';
+import DriverReducers from './Drivers/Reducers';
 
 const WidgetReducers = {
-    ...TestMeReducers
+    ...DriverReducers
 };
 
 const Reducers = combineReducers({ ...WidgetReducers });

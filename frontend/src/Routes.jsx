@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Welcome from './Welcome';
-import TestMe from './TestMe';
+import Drivers from './Drivers';
 import PageNotFound from './PageNotFound';
 
 const Routes = () => {
@@ -9,8 +9,7 @@ const Routes = () => {
         <div>
             <Switch>
                 <Route exact path="/" component={Welcome} />
-                <Route exact path="/test" component={TestMe} />
-                <Route exact path="/drivers" component={TestMe} />
+                <Route exact path="/drivers" component={Drivers} />
                 <Route component={PageNotFound} />
             </Switch>
         </div>

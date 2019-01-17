@@ -6,7 +6,7 @@ import WelcomeCss from './Welcome.scss';
 const Welcome = () => {
     return (
         <div>
-            <h1 className={WelcomeCss.content}>
+            <h1 className={WelcomeCss.title}>
                 Landing Page Content
             </h1>
         </div>);
