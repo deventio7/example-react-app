@@ -2,14 +2,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
-import NavHeaderCss from './NavHeader.scss';
-
-const { Header } = Layout;
+import NavHeaderCss from './NavHeader.scss'; // eslint-disable-line no-unused-vars
 
 const NavHeader = ({ location }) => {
     return (
         <div>
-            <Header className={NavHeaderCss.headerWrapper}>
+            <Layout.Header>
                 <Menu selectedKeys={[location.pathname]} mode="horizontal">
                     <Menu.Item key="/">
                         <Link to="/">
@@ -20,7 +18,7 @@ const NavHeader = ({ location }) => {
                         <Link to="/drivers">Drivers</Link>
                     </Menu.Item>
                 </Menu>
-            </Header>
+            </Layout.Header>
         </div>);
 };
 

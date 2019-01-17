@@ -1,9 +1,8 @@
-.headerWrapper {
-    padding: 0;
-    height: auto;
-    background-color: $solid-blue;
-}
+:global {
 
-.anticon {
-    margin: 0;
+    .ant-layout-header {
+        padding: 0;
+        height: auto;
+        background-color: $solid-blue;
+    }
 }
