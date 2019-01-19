@@ -33,6 +33,9 @@
     "jsx-a11y/href-no-hash": 0,
     "jsx-a11y/anchor-is-valid": [1, { "aspects": ["invalidHref"] }],
     "object-curly-spacing": 0,
+    "object-curly-newline": ["error", {
+      "ImportDeclaration": "never",
+    }],
     "array-callback-return": 0,
     "no-alert": 2,
     "no-plusplus": 0,
