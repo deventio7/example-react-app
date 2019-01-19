@@ -7,3 +7,19 @@
     background-color: white;
     width: 80%;
 }
+
+.displaySidebar {
+    vertical-align: top;
+    display: inline-block;
+    width: 20%;
+    padding-right: 3%;
+
+    h3 {
+        text-align: center;
+    }
+
+    .calculatedTimes {
+        padding-top: 25px;
+        width: 100%;
+    }
+}

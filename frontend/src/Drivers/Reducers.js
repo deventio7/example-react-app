@@ -39,7 +39,9 @@ const driverData = (state = initialState, action) => {
                 isInitialized: state.isInitialized ? true : state.pendingNumber === 1,
                 data: {
                     ...state.data,
-                    legs: action.payload.data
+                    legs: action.payload.data.sort((leg1, leg2) => {
+                        return leg1.legID < leg2.legID ? -1 : 1;
+                    })
                 }
             };
         case ActionTypes.GET_STOP_DATA_FULFILLED:
@@ -50,7 +52,13 @@ const driverData = (state = initialState, action) => {
                 isInitialized: state.isInitialized ? true : state.pendingNumber === 1,
                 data: {
                     ...state.data,
-                    stops: action.payload.data
+                    stops: action.payload.data.reduce((acc, stop) => {
+                        acc[stop.name] = {
+                            x: stop.x,
+                            y: stop.y
+                        };
+                        return acc;
+                    }, {})
                 }
             };
         case ActionTypes.GET_DRIVER_DATA_FULFILLED:
