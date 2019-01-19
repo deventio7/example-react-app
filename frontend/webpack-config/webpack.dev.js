@@ -82,19 +82,11 @@ module.exports = {
         noInfo: false,
         clientLogLevel: 'warning',
         stats: 'errors-only',
-        // enable HMR depends on OS
-        // https://github.com/gaearon/react-hot-loader/issues/511
         hot: true,
-        // serve index.html in place of 404 responses to allow HTML5 history
         historyApiFallback: true,
         port: 4000,
         host: 'localhost'
     },
-    /**
-     * webpack 4 new optimization feature list
-     * https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a
-     * StyleLintPlugin is unknown
-     */
     plugins: [
         new StyleLintPlugin({
             failOnError: false,
