@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, PUT");
     next();
 });
 
@@ -34,23 +35,27 @@ let init = async () => {
     }
 
     app.put('/driver', (req, res) => {
-        if (req.body.activeLegID && req.body.legProgress) {
+        if (typeof req.body.activeLegID === 'undefined' || typeof req.body.legProgress === 'undefined') {
             log.info('PUT /driver failed due to malformed body');
             res.status(400).end();
+            return;
         }
-        if (state.legs[req.body.activeLegID] && parseInt(req.body.legProgress, 10) !== NaN) {
+        if (!(state.legs.some((leg) => { return leg.legID === req.body.activeLegID }) && typeof req.body.legProgress === 'number')) {
             log.info('PUT /driver failed due to incorrect body contents in its keys');
             res.status(400).end();
+            return;
         }
-        let progress = parseInt(req.body.legProgress, 10);
+        let progress = req.body.legProgress;
         if (progress >= 0 && progress <= 100) {
             state.driver.activeLegID = req.body.activeLegID;
             state.driver.legProgress = req.body.legProgress;
             log.info('PUT /driver success');
             res.status(200).end();
+            return;
         } else {
             log.info('PUT /driver failed due to legProgress not in proper range');
             res.status(400).end();
+            return;
         }
     });
 
