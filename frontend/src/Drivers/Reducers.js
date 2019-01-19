@@ -4,6 +4,7 @@ const initialState = {
     isFulfilled: false,
     pendingNumber: 0,
     isRejected: false,
+    isInitialized: false,
     data: {
         stops: [],
         legs: [],
@@ -35,6 +36,7 @@ const driverData = (state = initialState, action) => {
                 ...state,
                 isFulfilled: state.pendingNumber === 1,
                 pendingNumber: state.pendingNumber - 1,
+                isInitialized: state.isInitialized ? true : state.pendingNumber === 1,
                 data: {
                     ...state.data,
                     legs: action.payload.data
@@ -45,6 +47,7 @@ const driverData = (state = initialState, action) => {
                 ...state,
                 isFulfilled: state.pendingNumber === 1,
                 pendingNumber: state.pendingNumber - 1,
+                isInitialized: state.isInitialized ? true : state.pendingNumber === 1,
                 data: {
                     ...state.data,
                     stops: action.payload.data
@@ -55,6 +58,7 @@ const driverData = (state = initialState, action) => {
                 ...state,
                 isFulfilled: state.pendingNumber === 1,
                 pendingNumber: state.pendingNumber - 1,
+                isInitialized: state.isInitialized ? true : state.pendingNumber === 1,
                 data: {
                     ...state.data,
                     driver: action.payload.data
