@@ -28,6 +28,14 @@ export class PositionUpdater extends React.PureComponent {
         });
     }
 
+    handleLegChange = (newValue) => {
+        this.props.updatePreview({ activeLegID: newValue });
+    }
+
+    handleProgressChange = (newValue) => {
+        this.props.updatePreview({ legProgress: newValue });
+    }
+
     render = () => {
         const {
             getFieldDecorator, getFieldsError, getFieldError, isFieldTouched
@@ -58,7 +66,7 @@ export class PositionUpdater extends React.PureComponent {
                             }],
                             initialValue: this.props.driver.activeLegID
                         })(
-                            <Select>
+                            <Select onChange={this.handleLegChange}>
                                 {this.props.legIDs.map((legID) => {
                                     return (
                                         <Select.Option key={legID} value={legID}>
@@ -80,9 +88,9 @@ export class PositionUpdater extends React.PureComponent {
                                 min: 0,
                                 max: 100
                             }],
-                            initialValue: this.props.driver.legProgress
+                            initialValue: parseInt(this.props.driver.legProgress, 10)
                         })(
-                            <Slider />
+                            <Slider onChange={this.handleProgressChange} />
                         )}
                     </Form.Item>
                     <Form.Item>
@@ -109,7 +117,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-// onFieldsChange should propogate to super state to visualize in real-time
-const FormedUpdater = Form.create({ name: 'driver-updater', onFieldsChange: console.log })(PositionUpdater);
+const FormedUpdater = Form.create({ name: 'driver-updater' })(PositionUpdater);
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormedUpdater);

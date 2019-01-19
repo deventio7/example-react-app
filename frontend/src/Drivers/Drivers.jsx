@@ -17,12 +17,21 @@ export class Drivers extends React.Component {
         super(props);
         this.canvas = React.createRef();
         this.state = {
-            a: 'b'
+            hasData: false,
+            previewDriver: {
+                activeLegID: '',
+                legProgress: 0
+            }
         };
     }
 
     componentDidMount = () => {
-        this.props.actions.getData();
+        this.props.actions.getData(() => {
+            this.setState({
+                hasData: true,
+                previewDriver: this.props.driverData.data.driver
+            });
+        });
     }
 
     drawCanvas = ({ stops, legs, driver }) => {
@@ -86,6 +95,20 @@ export class Drivers extends React.Component {
                 resize(stop.y) + STOP_FONT_SIZE / 2 - 1);
         });
 
+        const prvwDriver = this.state.previewDriver;
+        const prvwDriverCoordinates = [resize(
+            stopMap[prvwDriver.activeLegID.substring(0, 1)].x * (100 - prvwDriver.legProgress) / 100
+            + stopMap[prvwDriver.activeLegID.substring(1)].x * prvwDriver.legProgress / 100
+        ), resize(
+            stopMap[prvwDriver.activeLegID.substring(0, 1)].y * (100 - prvwDriver.legProgress) / 100
+            + stopMap[prvwDriver.activeLegID.substring(1)].y * prvwDriver.legProgress / 100
+        )];
+        ctx.fillStyle = 'rgba(0,255,0,0.5)';
+        ctx.fillRect(
+            prvwDriverCoordinates[0] - DRIVER_SIZE / 2, prvwDriverCoordinates[1] - DRIVER_SIZE / 2,
+            DRIVER_SIZE, DRIVER_SIZE
+        );
+
         ctx.fillStyle = 'green';
         ctx.fillRect(
             driverCoordinates[0] - DRIVER_SIZE / 2, driverCoordinates[1] - DRIVER_SIZE / 2,
@@ -93,9 +116,21 @@ export class Drivers extends React.Component {
         );
     }
 
+    updatePreviewDriver = (newPreviewDriver) => {
+        this.setState((state) => {
+            return {
+                ...state,
+                previewDriver: {
+                    ...state.previewDriver,
+                    ...newPreviewDriver
+                }
+            };
+        });
+    }
+
     render = () => {
         let legIDs = [];
-        if (this.props.driverData.isFulfilled && this.canvas.current) {
+        if (this.state.hasData && this.canvas.current) {
             this.drawCanvas(this.props.driverData.data);
             legIDs = this.props.driverData.data.legs.map((leg) => {
                 return leg.legID;
@@ -106,13 +141,12 @@ export class Drivers extends React.Component {
                 <h1 className={DriversCss.title}>Driver Status</h1>
                 <PositionUpdater
                     retrigger={this.props.actions.getData}
-                    superSetState={this.setState}
+                    updatePreview={this.updatePreviewDriver}
                     legIDs={legIDs}
                     driver={this.props.driverData.data.driver}
-                    disabled={!this.props.driverData.data.driver.activeLegID}
+                    disabled={!this.state.hasData}
                 />
                 <canvas className={DriversCss.canvas} ref={this.canvas} />
-                {this.state.a}
             </div>
         );
     }
