@@ -17,7 +17,8 @@ let init = async () => {
     let state = {
         driver: undefined,
         legs: undefined,
-        stops: undefined
+        stops: undefined,
+        bonusdriver: undefined
     };
 
     let promises = Object.keys(state).map((key) => {

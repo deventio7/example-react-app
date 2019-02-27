@@ -17,6 +17,10 @@ const getData = (callback) => {
             dispatch({
                 type: ActionTypes.GET_DRIVER_DATA,
                 payload: axios.get(`${baseUrl}/driver`)
+            }),
+            dispatch({
+                type: ActionTypes.GET_BONUSDRIVER_DATA,
+                payload: axios.get(`${baseUrl}/bonusdriver`)
             })
         ]).then(callback);
     };

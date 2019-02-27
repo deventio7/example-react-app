@@ -7,7 +7,7 @@ import PositionUpdater from './PositionUpdater';
 
 const DRAW_POSITIONS = 200;
 const LEG_DRAW_WIDTH = 3;
-const STOP_DRAW_SIZE = 6;
+const STOP_DRAW_SIZE = 8;
 const STOP_DRAW_RADIUS = 4; // must be smaller than STOP_DRAW_SIZE
 const STOP_FONT_SIZE = 8;
 const DRIVER_SIZE = 10;
@@ -29,12 +29,25 @@ export class Drivers extends React.Component {
 
     getDataAndUpdate = () => {
         this.props.actions.getData(() => {
-            const { driver } = this.props.driverData.data;
+            const { driver, bonusdriver, stops } = this.props.driverData.data;
+            const distance2d = (obj1, obj2) => {
+                return ((obj1.x - obj2.x) ** 2) + ((obj1.y - obj2.y) ** 2);
+            };
             this.setState({
                 hasData: true,
                 totalTime: this.calculateRemainingTime({ activeLegID: '' }),
                 remainTime: this.calculateRemainingTime(driver),
-                previewDriver: driver
+                previewDriver: driver,
+                bonusDriverStop: Object.values(stops).reduce((acc, stop) => {
+                    const distance = distance2d(bonusdriver, stop);
+                    if (distance < acc.dist) {
+                        return {
+                            dist: distance,
+                            stop
+                        };
+                    }
+                    return acc;
+                }, { dist: Infinity }).stop
             });
         });
     }
@@ -43,19 +56,24 @@ export class Drivers extends React.Component {
         this.getDataAndUpdate();
     }
 
-    drawCanvas = ({ stops, legs, driver }) => {
+    drawCanvas = ({ stops, legs, driver, bonusdriver }) => {
         this.canvas.current.width = this.canvas.current.offsetWidth;
         this.canvas.current.height = this.canvas.current.offsetWidth;
         const resize = (coordinate) => {
             return (coordinate + 1) * this.canvas.current.height / (DRAW_POSITIONS + 2);
         };
-        const driverCoordinates = [resize(
-            stops[driver.activeLegID.substring(0, 1)].x * (100 - driver.legProgress) / 100
-            + stops[driver.activeLegID.substring(1)].x * driver.legProgress / 100
-        ), resize(
-            stops[driver.activeLegID.substring(0, 1)].y * (100 - driver.legProgress) / 100
-            + stops[driver.activeLegID.substring(1)].y * driver.legProgress / 100
-        )];
+
+        const getDriverCoords = ({activeLegID, legProgress}) => {
+            return [resize(
+                stops[activeLegID.substring(0, 1)].x * (100 - legProgress) / 100
+                + stops[activeLegID.substring(1)].x * legProgress / 100
+            ), resize(
+                stops[activeLegID.substring(0, 1)].y * (100 - legProgress) / 100
+                + stops[activeLegID.substring(1)].y * legProgress / 100
+            )];
+        };
+
+        const driverCoordinates = getDriverCoords(driver);
 
         const ctx = this.canvas.current.getContext('2d');
         ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.width);
@@ -81,6 +99,12 @@ export class Drivers extends React.Component {
         });
         ctx.stroke();
 
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(resize(bonusdriver.x), resize(bonusdriver.y));
+        ctx.lineTo(resize(this.state.bonusDriverStop.x), resize(this.state.bonusDriverStop.y));
+        ctx.stroke();
+
         ctx.lineWidth = STOP_DRAW_SIZE;
         ctx.font = `${STOP_FONT_SIZE}px`;
         Object.keys(stops).forEach((stopKey) => {
@@ -98,17 +122,16 @@ export class Drivers extends React.Component {
                 resize(stops[stopKey].y) + STOP_FONT_SIZE / 2 - 1);
         });
 
-        const prvwDriver = this.state.previewDriver;
-        const prvwDriverCoordinates = [resize(
-            stops[prvwDriver.activeLegID.substring(0, 1)].x * (100 - prvwDriver.legProgress) / 100
-            + stops[prvwDriver.activeLegID.substring(1)].x * prvwDriver.legProgress / 100
-        ), resize(
-            stops[prvwDriver.activeLegID.substring(0, 1)].y * (100 - prvwDriver.legProgress) / 100
-            + stops[prvwDriver.activeLegID.substring(1)].y * prvwDriver.legProgress / 100
-        )];
+        const prvwDriverCoordinates = getDriverCoords(this.state.previewDriver);
         ctx.fillStyle = 'rgba(0,255,0,0.5)';
         ctx.fillRect(
             prvwDriverCoordinates[0] - DRIVER_SIZE / 2, prvwDriverCoordinates[1] - DRIVER_SIZE / 2,
+            DRIVER_SIZE, DRIVER_SIZE
+        );
+
+        ctx.fillStyle = 'red';
+        ctx.fillRect(
+            resize(bonusdriver.x) - DRIVER_SIZE / 2, resize(bonusdriver.y) - DRIVER_SIZE / 2,
             DRIVER_SIZE, DRIVER_SIZE
         );
 
