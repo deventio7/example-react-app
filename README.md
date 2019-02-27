@@ -1,4 +1,4 @@
-# Rose Rocket Technical Challenge
+# Running
 To run the backend, navigate to /backend, then run `npm install`, followed by `npm run start`. The backend uses port 3000, which is currently hardcoded.
 
 To run the frontend server, navigate to /frontend, then run `npm install`, followed by `npm run start`. The frontend server uses port 4000, which is currently hardcoded.
